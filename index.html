@@ -103,9 +103,14 @@ function myFunction(id){
   //var s = id.length;
   var text_id = id.slice(2);
   var t_id = "l_text" + text_id;
-
+if(document.getElementById(id).checked == true){
   document.getElementById(t_id).style.textDecorationLine="line-through";
   document.getElementById(t_id).style.color="#80868B";
+}else{
+  document.getElementById(t_id).style.textDecorationLine="none";
+  document.getElementById(t_id).style.color="#000000";
+}
+
 }
 
 function delete_task(id){
