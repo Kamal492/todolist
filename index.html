@@ -31,8 +31,8 @@
 
 </div>
 <script type="text/javascript">
-
-var i = 0;
+//localStorage.clear();
+var i;
 function addelement() {
   document.getElementsByClassName('message')[0].style.visibility = "hidden";
   document.getElementsByClassName('tasks')[0].style.visibility = "visible";
@@ -54,6 +54,8 @@ function addelement() {
   y.setAttribute("type", "text");
   y.setAttribute("placeholder", "Type here");
 y.setAttribute("class", "input_c");
+y.setAttribute("value", "");
+  y.setAttribute("onkeyup", "textupdate(this.id)");
  num = i;
  i=i+1;
 y.setAttribute("id", "l_text"+num.toString());
@@ -63,6 +65,7 @@ del_img.setAttribute("class","delimage");
     node.appendChild(del_img);
   document.getElementById("task-item").appendChild(node);
   document.getElementById("l_text"+num.toString()).focus()
+//  console.log(document.getElementById("task-item").childElementCount);
 }
 
 document.addEventListener("keyup", function(event) {
@@ -87,6 +90,8 @@ document.addEventListener("keyup", function(event) {
       y.setAttribute("type", "text");
       y.setAttribute("placeholder", "Type here");
       y.setAttribute("class", "input_c");
+      y.setAttribute("value", "");
+      y.setAttribute("onkeyup", "textupdate(this.id)");
       num = i;
       i=i+1;
       y.setAttribute("id", "l_text"+num.toString());
@@ -96,6 +101,7 @@ document.addEventListener("keyup", function(event) {
 
       document.getElementById("task-item").appendChild(node);
       document.getElementById("l_text"+num.toString()).focus();
+      //console.log(document.getElementById("task-item").childElementCount);
     }
 });
 
@@ -120,12 +126,38 @@ function delete_task(id){
   list.parentNode.removeChild(list);
   //list.removeChild(list.childNodes[d]);
   var num_li = document.getElementsByTagName("LI").length;
-  console.log(num_li);
+  //console.log(num_li);
   if(num_li == 0){
     document.getElementsByClassName('message')[0].style.visibility = "visible";
   }
 }
+window.onbeforeunload = () => {
+  var tasklist = document.getElementById("task-item").outerHTML;
+  localStorage.setItem("task",tasklist);
+  localStorage.setItem("x",i);
+}
+window.onload = () => {
+  if (localStorage.getItem('task') !== null) {
 
+    document.getElementById("task-item").outerHTML=localStorage.getItem('task');
+    document.getElementsByClassName('tasks')[0].style.visibility = "visible"
+    document.getElementsByClassName('message')[0].style.visibility = "hidden";
+    i = Number(localStorage.getItem('x'));
+    if(document.getElementById("task-item").childElementCount == 0){
+      document.getElementsByClassName('message')[0].style.visibility = "visible";
+    }
+
+} else{
+  //document.getElementById("task-item").outerHTML="<ul id='task-item'></ul>";
+   i=0;
+  // console.log(i);
+  document.getElementsByClassName('message')[0].style.visibility = "visible";
+}
+}
+function textupdate(id){
+  var x = document.getElementById(id).value;
+  document.getElementById(id).setAttribute("value",x);
+}
 </script>
   </body>
 </html>
